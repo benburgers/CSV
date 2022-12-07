@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Project Settings">
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Title>Ben Burgers CSV features</Title>
+		<Version>0.1.0</Version>
+		<Authors>benburgers</Authors>
+		<Company>Ben Burgers</Company>
+		<Product>Ben Burgers Text</Product>
+		<Description>Entity Framework Core implementation for reading and writing CSV files.</Description>
+		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<PackageProjectUrl>https://github.com/users/benburgers/projects/2</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/benburgers/Text</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Text;CSV;Comma-Separated;Values;Character;Delimiter;Entity;Framework</PackageTags>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package References .NET 6.0" Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
+	</ItemGroup>
+
+	<ItemGroup Label="Package References .NET 7.0" Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Label="Package">
+		<Content Include="..\..\..\LICENSE" Link="LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Content>
+		<Content Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\CSV\BenBurgers.Text.Csv\BenBurgers.Text.Csv.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Label="Resources">
+		<Compile Update="**\Exceptions\ExceptionMessages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ExceptionMessages.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.*.resx">
+			<DependentUpon>ExceptionMessages.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

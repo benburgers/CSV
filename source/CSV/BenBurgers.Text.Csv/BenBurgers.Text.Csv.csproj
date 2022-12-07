@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Project Settings">
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Title>Ben Burgers CSV features</Title>
+		<Version>1.0.0</Version>
+		<Authors>benburgers</Authors>
+		<Company>Ben Burgers</Company>
+		<Product>Ben Burgers Text</Product>
+		<Description>Features reading and writing CSV files.</Description>
+		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<PackageProjectUrl>https://github.com/users/benburgers/projects/2</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/benburgers/Text</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Text;CSV;Comma-Separated;Values;Character;Delimiter;Reader;Writer</PackageTags>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package">
+		<Content Include="..\..\..\LICENSE" Link="LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Content>
+		<Content Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Label="Resources">
+		<Compile Update="**\Exceptions\ExceptionMessages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ExceptionMessages.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.*.resx">
+			<DependentUpon>ExceptionMessages.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

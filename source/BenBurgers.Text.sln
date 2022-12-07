@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{E562F61E-2494-4992-9317-1719C633FE4F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFramework", "{E41AF164-AD64-4D08-8AA4-3654C73D2753}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B6DF1023-3E1A-4959-B5A6-1947E259EE3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenBurgers.EntityFrameworkCore.Csv", "EntityFramework\BenBurgers.EntityFrameworkCore.Csv\BenBurgers.EntityFrameworkCore.Csv.csproj", "{7DD450D3-5BFE-4EA1-861D-897B9381B336}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenBurgers.EntityFrameworkCore.Csv.Tests", "EntityFramework\Tests\BenBurgers.EntityFrameworkCore.Csv.Tests\BenBurgers.EntityFrameworkCore.Csv.Tests.csproj", "{08D94942-DD0C-468C-A9F2-EA5A91BABDF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSV", "CSV", "{7201A225-B75D-41B5-98C1-0BE180962565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenBurgers.Text.Csv", "CSV\BenBurgers.Text.Csv\BenBurgers.Text.Csv.csproj", "{F7103463-5FBA-4D54-85A6-614273B3129A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8077CC2C-0470-46D5-B213-0CEB379BBD83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenBurgers.Text.Csv.Tests", "CSV\Tests\BenBurgers.Text.Csv.Tests\BenBurgers.Text.Csv.Tests.csproj", "{CD57C023-D55A-4518-BD06-3C359DDDC1F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DD450D3-5BFE-4EA1-861D-897B9381B336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD450D3-5BFE-4EA1-861D-897B9381B336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD450D3-5BFE-4EA1-861D-897B9381B336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD450D3-5BFE-4EA1-861D-897B9381B336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D94942-DD0C-468C-A9F2-EA5A91BABDF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D94942-DD0C-468C-A9F2-EA5A91BABDF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D94942-DD0C-468C-A9F2-EA5A91BABDF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7103463-5FBA-4D54-85A6-614273B3129A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7103463-5FBA-4D54-85A6-614273B3129A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7103463-5FBA-4D54-85A6-614273B3129A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7103463-5FBA-4D54-85A6-614273B3129A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD57C023-D55A-4518-BD06-3C359DDDC1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD57C023-D55A-4518-BD06-3C359DDDC1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD57C023-D55A-4518-BD06-3C359DDDC1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B6DF1023-3E1A-4959-B5A6-1947E259EE3A} = {E41AF164-AD64-4D08-8AA4-3654C73D2753}
+		{7DD450D3-5BFE-4EA1-861D-897B9381B336} = {E41AF164-AD64-4D08-8AA4-3654C73D2753}
+		{08D94942-DD0C-468C-A9F2-EA5A91BABDF0} = {B6DF1023-3E1A-4959-B5A6-1947E259EE3A}
+		{F7103463-5FBA-4D54-85A6-614273B3129A} = {7201A225-B75D-41B5-98C1-0BE180962565}
+		{8077CC2C-0470-46D5-B213-0CEB379BBD83} = {7201A225-B75D-41B5-98C1-0BE180962565}
+		{CD57C023-D55A-4518-BD06-3C359DDDC1F3} = {8077CC2C-0470-46D5-B213-0CEB379BBD83}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9BB7C9CE-71D1-4EC3-87F2-00D15BD713E8}
+	EndGlobalSection
+EndGlobal
