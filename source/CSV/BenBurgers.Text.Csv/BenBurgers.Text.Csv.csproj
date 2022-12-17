@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Title>Ben Burgers CSV features</Title>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>benburgers</Authors>
 		<Company>Ben Burgers</Company>
 		<Product>Ben Burgers Text</Product>
@@ -16,9 +16,19 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/benburgers/Text</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>Text;CSV;Comma-Separated;Values;Character;Delimiter;Reader;Writer</PackageTags>
+		<PackageTags>Text;CSV;Comma-Separated;Values;Character;Delimiter;Reader;Writer;Stream</PackageTags>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageReleaseNotes>Version 1.1.0
+- CsvStream.
+- CsvStreamFactory.
+- CSV attributes for optional custom type mapping.
+- CSV generic mappings have a dynamic column order.
+
+Version 1.0.0
+- CsvReader.
+- CsvWriter.
+- Mapping options.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup Label="Package">

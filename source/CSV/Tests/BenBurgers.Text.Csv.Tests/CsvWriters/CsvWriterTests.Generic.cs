@@ -6,20 +6,20 @@
 namespace BenBurgers.Text.Csv.Tests;
 
 using System.Text;
-using static CsvReaderTestGenericValues;
+using BenBurgers.Text.Csv.Tests.CsvWriters;
 
 public partial class CsvWriterTests
 {
     [Theory(DisplayName = "CSV Writer - record values")]
     [ClassData(typeof(CsvWriterTestGenericValues))]
-    public async Task GenericTestAsync(
-        CsvOptions<MockCsvRecord> options,
-        MockCsvRecord[] input,
+    public async Task GenericTestAsync<T>(
+        CsvOptions<T> options,
+        T[] input,
         string expected)
     {
         // Arrange
         using var stream = new MemoryStream();
-        using var writer = new CsvWriter<MockCsvRecord>(stream, options);
+        using var writer = new CsvWriter<T>(stream, options);
 
         // Act
         foreach (var record in input)

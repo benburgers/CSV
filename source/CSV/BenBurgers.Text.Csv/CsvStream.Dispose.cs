@@ -5,17 +5,18 @@
 
 namespace BenBurgers.Text.Csv;
 
-public partial class CsvWriter : IDisposable, IAsyncDisposable
+public partial class CsvStream : IDisposable, IAsyncDisposable
 {
-    private bool disposedValue = false;
+    private bool disposedValue;
 
     private void Dispose(bool disposing)
     {
-        if (!this.disposedValue)
+        if (!disposedValue)
         {
             if (disposing)
             {
-                this.streamWriter.Dispose();
+                this.writer.Dispose();
+                this.reader.Dispose();
             }
             this.disposedValue = true;
         }
@@ -28,11 +29,23 @@ public partial class CsvWriter : IDisposable, IAsyncDisposable
         GC.SuppressFinalize(this);
     }
 
+    private async ValueTask DisposeAsync(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                await this.reader.DisposeAsync();
+                await this.writer.DisposeAsync();
+            }
+            this.disposedValue = true;
+        }
+    }
+
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        this.Dispose(disposing: true);
+        await this.DisposeAsync(disposing: true);
         GC.SuppressFinalize(this);
-        await Task.CompletedTask;
     }
 }

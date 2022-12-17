@@ -56,6 +56,8 @@ The converter gets a function that receives the raw data as strings and outputs 
 The implementer has full control over how the raw values are converted to a record.
 
 ```csharp
+using BenBurgers.Text.Csv;
+
 var converterMapping = new CsvConverterMapping<MyCsvRecord>(rawValues => new MyCsvRecord(DoSomething(rawValues[0]), DoSomething2(rawValues[1])));
 var options = new CsvOptions<MyCsvRecord>(converterMapping);
 using var reader = new CsvReader(stream, options);
@@ -66,8 +68,11 @@ using var reader = new CsvReader(stream, options);
 The CSV data has a header line with column names. These names are then used to infer to which property or constructor parameter the values will be mapped.
 
 ```csharp
+using BenBurgers.Text.Csv;
+
 var headerMapping =
 	new CsvHeaderMapping<MyCsvRecord>(
+		new[] { "SomeProperty", "AnotherProperty" },
 		rawValues => new(
 			rawValues[nameof(MyCsvRecord.SomeProperty)],
 			DoSomething(rawValues[nameof(MyCsvRecord.AnotherProperty)])),
@@ -84,6 +89,8 @@ This approach presumes the CSV data has a header line.
 A specialization is a mapping that uses reflection to automatically determine which column maps to which property or constructor parameter.
 
 ```csharp
+using BenBurgers.Text.Csv;
+
 var headerTypeMapping = new CsvHeaderTypeMapping<MyCsvRecord>();
 var options = new CsvOptions<MyCsvRecord>(headerTypeMapping);
 using var reader = new CsvReader(stream, options);
@@ -98,6 +105,8 @@ Conversely, the CSV Writer accepts a stream and configuration options as well.
 ### Raw
 
 ```csharp
+using BenBurgers.Text.Csv;
+
 var options = new CsvOptions();
 using var writer = new CsvWriter(stream, options);
 await writer.WriteLineAsync(new [] { "Value1", "123" });
@@ -106,8 +115,53 @@ await writer.WriteLineAsync(new [] { "Value1", "123" });
 ### Generic
 
 ```csharp
+using BenBurgers.Text.Csv;
+
 var options = new CsvOptions<MyCsvRecord>(mapping);
 using var writer = new CsvWriter<MyCsvRecord>(stream, options);
 var record = new MyCsvRecord("Value1", 123);
 await writer.WriteLineAsync(record);
+```
+
+## CSV Stream
+
+A CSV Stream is a combination of a reader and a writer. It also provides additional functionality such as looking up a particular line or inserting/appending a line to CSV data.
+
+```csharp
+using BenBurgers.Text.Csv;
+
+var options new CsvOptions();
+using var stream = new CsvStream(stream, options);
+stream.GoTo(5L); // Go to the 6th line (zero-based)
+var values = stream.ReadLine(); // Returns the CSV values at the 6th line.
+stream.InsertLine(3L, new[] { "foo", "123", "bar" }); // Inserts the specified values at the 4th line (zero-based).
+stream.AppendLine(new[] { "bar", "321", "foo" }); // Appends the specified values at the end of the stream.
+```
+
+The generic CSV Stream has similar features to the generic reader and generic writer and uses the same mapping options.
+
+## CSV Stream Factory
+
+A CSV Stream Factory facilitates creating CSV streams from various sources.
+
+- A `FileInfo`.
+- An `HttpClient`.
+- A `Stream`.
+- A file located at a particular path.
+
+```csharp
+using BenBurgers.Text.Csv;
+
+var options = new CsvOptions();
+var factory = new CsvStreamFactory(options);
+using var csvStream = factory.FromFile("C:\\foo\\bar.csv");
+```
+
+```csharp
+using BenBurgers.Text.Csv;
+
+var options = new CsvOptions();
+var factory = new CsvStreamFactory(options);
+using var memoryStream = new MemoryStream();
+using var csvStream = factory.From(memoryStream);
 ```

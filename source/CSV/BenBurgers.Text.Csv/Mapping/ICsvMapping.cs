@@ -12,7 +12,7 @@ namespace BenBurgers.Text.Csv.Mapping;
 public interface ICsvMapping<T>
 {
     /// <summary>
-    /// Gets the column names.
+    /// Gets the set of column names.
     /// </summary>
-    IReadOnlyList<string>? ColumnNames { get; }
+    IReadOnlySet<string>? ColumnNames { get; }
 }

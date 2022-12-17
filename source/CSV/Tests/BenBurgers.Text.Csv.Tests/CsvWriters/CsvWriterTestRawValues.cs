@@ -5,7 +5,7 @@
 
 using System.Collections;
 
-namespace BenBurgers.Text.Csv.Tests;
+namespace BenBurgers.Text.Csv.Tests.CsvWriters;
 
 public class CsvWriterTestRawValues : IEnumerable<object?[]>
 {
@@ -45,6 +45,6 @@ def;456;DEF;$%^
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator();
+        return GetEnumerator();
     }
 }

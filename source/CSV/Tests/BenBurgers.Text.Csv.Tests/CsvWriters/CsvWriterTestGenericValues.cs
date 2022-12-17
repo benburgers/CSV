@@ -5,9 +5,9 @@
 
 using BenBurgers.Text.Csv.Mapping;
 using System.Collections;
-using static BenBurgers.Text.Csv.Tests.CsvReaderTestGenericValues;
+using static BenBurgers.Text.Csv.Tests.CsvReaders.CsvReaderTestGenericValues;
 
-namespace BenBurgers.Text.Csv.Tests;
+namespace BenBurgers.Text.Csv.Tests.CsvWriters;
 
 public class CsvWriterTestGenericValues : IEnumerable<object?[]>
 {
@@ -31,6 +31,7 @@ def,456,DEF,$%^
             new object?[]
             {
                 new CsvOptions<MockCsvRecord>(new CsvHeaderMapping<MockCsvRecord>(
+                    new [] { "Value1", "Value2", "Value3", "Value4" }.ToHashSet(),
                     rawValues => new(
                         rawValues[nameof(MockCsvRecord.Value1)],
                         int.Parse(rawValues[nameof(MockCsvRecord.Value2)]),
@@ -80,6 +81,19 @@ def,456,DEF,$%^
 @"abc;123;ABC;!@#
 def;456;DEF;$%^
 "
+            },
+            new object?[]
+            {
+                new CsvOptions<MockCsvRecordWithAttributes>(new CsvHeaderTypeMapping<MockCsvRecordWithAttributes>()),
+                new[]
+                {
+                    new MockCsvRecordWithAttributes("cba", 321, "def", "abc"),
+                    new MockCsvRecordWithAttributes("tre", 123, "zxy", "qwe")
+                },
+@"myValue,nextValue,Value3,Value4
+cba,321,def,abc
+tre,123,zxy,qwe
+",
             }
         };
 
@@ -90,6 +104,6 @@ def;456;DEF;$%^
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator();
+        return GetEnumerator();
     }
 }

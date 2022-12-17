@@ -3,7 +3,6 @@
  * This work is licensed by GNU General Public License version 3.
  */
 
-using BenBurgers.Text.Csv.Exceptions;
 using BenBurgers.Text.Csv.Mapping;
 
 namespace BenBurgers.Text.Csv;
@@ -32,27 +31,6 @@ public sealed partial class CsvReader<T> : CsvReader
     {
     }
 
-    private T CreateRecord(IReadOnlyList<string> rawValues)
-    {
-        return (((CsvOptions<T>)this.Options).Mapping) switch
-        {
-            CsvConverterMapping<T> { DestinationConverter: { } converter } => converter(rawValues),
-            CsvHeaderMapping<T> headerMapping => CreateRecordWithHeader(headerMapping, rawValues),
-            _ => throw new CsvException("")
-        };
-    }
-
-    private T CreateRecordWithHeader(CsvHeaderMapping<T> headerMapping, IReadOnlyList<string> rawValues)
-    {
-        var values = new Dictionary<string, string>();
-        for (var i = 0; i < this.ColumnNames.Count; ++i)
-        {
-            var columnName = this.ColumnNames[i];
-            values[columnName] = rawValues[i];
-        }
-        return headerMapping.Factory(values);
-    }
-
     /// <summary>
     /// Reads a line from the CSV data while converting the raw values to a CSV record.
     /// </summary>
@@ -63,6 +41,17 @@ public sealed partial class CsvReader<T> : CsvReader
         var rawValues = await base.ReadLineAsync(cancellationToken);
         if (rawValues is null)
             return default;
-        return CreateRecord(rawValues);
+        return ((CsvOptions<T>)this.Options).Mapping switch
+        {
+            ICsvLinearMapping<T> linearMapping => linearMapping.Consumer(rawValues),
+            ICsvHeaderMapping<T> headerMapping =>
+                headerMapping
+                    .Consumer(
+                        this
+                            .ColumnNames
+                            .Zip(rawValues, (cn, v) => new KeyValuePair<string, string>(cn, v))
+                            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value)),
+            _ => throw new NotSupportedException()
+        };
     }
 }

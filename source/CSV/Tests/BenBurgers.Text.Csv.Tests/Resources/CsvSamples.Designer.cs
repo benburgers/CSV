@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BenBurgers.Text.Csv.Exceptions {
+namespace BenBurgers.Text.Csv.Tests.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace BenBurgers.Text.Csv.Exceptions {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ExceptionMessages {
+    internal class CsvSamples {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExceptionMessages() {
+        internal CsvSamples() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BenBurgers.Text.Csv.Exceptions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BenBurgers.Text.Csv.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BenBurgers.Text.Csv.Tests.Resources.CsvSamples", typeof(CsvSamples).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,27 @@ namespace BenBurgers.Text.Csv.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The CSV header is required and does not exist, but no column names have been predefined..
+        ///   Looks up a localized string similar to 1,2,3,4,5,6,7,8,9
+        ///9,8,7,6,5,4,3,2,1
+        ///a,b,c,d,e,f,g,h,i
+        ///i,h,g,f,e,d,c,b,a.
         /// </summary>
-        internal static string HeaderColumnNamesNotConfigured {
+        internal static string Sample {
             get {
-                return ResourceManager.GetString("HeaderColumnNamesNotConfigured", resourceCulture);
+                return ResourceManager.GetString("Sample", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The CSV header does not have the expected column names..
+        ///   Looks up a localized string similar to Abc,Def,Ghi,Jkl,Mno,Pqr,Stu,Vwx,Yz
+        ///1,2,3,4,5,6,7,8,9
+        ///9,8,7,6,5,4,3,2,1
+        ///a,b,c,d,e,f,g,h,i
+        ///i,h,g,f,e,d,c,b,a.
         /// </summary>
-        internal static string HeaderDoesNotHaveExpectedColumnNames {
+        internal static string Sample_header {
             get {
-                return ResourceManager.GetString("HeaderDoesNotHaveExpectedColumnNames", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A CSV header line was expected, but wasn&apos;t found..
-        /// </summary>
-        internal static string HeaderLineMissing {
-            get {
-                return ResourceManager.GetString("HeaderLineMissing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The line &apos;{0}&apos; is out of bounds of the CSV stream..
-        /// </summary>
-        internal static string LineOutOfBounds {
-            get {
-                return ResourceManager.GetString("LineOutOfBounds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An unexpected error occurred..
-        /// </summary>
-        internal static string Unexpected {
-            get {
-                return ResourceManager.GetString("Unexpected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The number of CSV values &apos;{0}&apos; does not match the number of predefined or predetermined columns &apos;{1}&apos;..
-        /// </summary>
-        internal static string ValuesDoNotMatchColumns {
-            get {
-                return ResourceManager.GetString("ValuesDoNotMatchColumns", resourceCulture);
+                return ResourceManager.GetString("Sample_header", resourceCulture);
             }
         }
     }

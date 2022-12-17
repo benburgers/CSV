@@ -61,6 +61,24 @@ namespace BenBurgers.Text.Csv.Mapping.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected columns &apos;{0}&apos; but read columns &apos;{1}&apos;..
+        /// </summary>
+        internal static string HeaderMappingColumnsMismatch {
+            get {
+                return ResourceManager.GetString("HeaderMappingColumnsMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No suitable constructor found in the header type mapping for the CSV record..
+        /// </summary>
+        internal static string HeaderTypeMappingNoSuitableConstructorFound {
+            get {
+                return ResourceManager.GetString("HeaderTypeMappingNoSuitableConstructorFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The destination type &quot;{0}&quot; is not supported..
         /// </summary>
         internal static string TypeConverterDoesNotSupportDestinationType {

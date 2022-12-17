@@ -11,19 +11,25 @@ namespace BenBurgers.Text.Csv;
 /// <summary>
 /// Writes CSV data.
 /// </summary>
-public partial class CsvWriter : IDisposable, IAsyncDisposable
+public partial class CsvWriter
 {
-    private readonly StreamWriter streamWriter;
+    private StreamWriter streamWriter;
 
     /// <summary>
     /// Initializes a new instance of <see cref="CsvWriter" />.
     /// </summary>
     /// <param name="stream">The stream to which to write the CSV data.</param>
     /// <param name="options">The CSV configuration options.</param>
+    /// <exception cref="CsvHeaderDoesNotHaveExpectedColumnNamesException">
+    /// A <see cref="CsvHeaderDoesNotHaveExpectedColumnNamesException" /> is thrown if a header line is required, is present, but does not contain the expected column names.
+    /// </exception>
+    /// <exception cref="CsvHeaderColumnNamesNotConfiguredException">
+    /// A <see cref="CsvHeaderColumnNamesNotConfiguredException" /> is thrown if a header line is required, is not present, but no column names were predefined.
+    /// </exception>
     public CsvWriter(Stream stream, CsvOptions options)
     {
+        this.ColumnNames = options.ColumnNames?.ToArray() ?? Array.Empty<string>();
         this.Options = options;
-        this.ColumnNames = options.ColumnNames ?? new List<string>();
         this.streamWriter =
             this.GetEncoding() is { } encoding
                 ? new StreamWriter(stream, encoding)
@@ -36,13 +42,24 @@ public partial class CsvWriter : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="streamWriter">The stream writer that writes the CSV data.</param>
     /// <param name="options">The CSV configuration options.</param>
+    /// <exception cref="CsvHeaderDoesNotHaveExpectedColumnNamesException">
+    /// A <see cref="CsvHeaderDoesNotHaveExpectedColumnNamesException" /> is thrown if a header line is required, is present, but does not contain the expected column names.
+    /// </exception>
+    /// <exception cref="CsvHeaderColumnNamesNotConfiguredException">
+    /// A <see cref="CsvHeaderColumnNamesNotConfiguredException" /> is thrown if a header line is required, is not present, but no column names were predefined.
+    /// </exception>
     public CsvWriter(StreamWriter streamWriter, CsvOptions options)
     {
-        this.streamWriter = streamWriter;
+        this.ColumnNames = options.ColumnNames?.ToArray() ?? Array.Empty<string>();
         this.Options = options;
-        this.ColumnNames = options.ColumnNames ?? new List<string>();
+        this.streamWriter = streamWriter;
         this.Initialize();
     }
+
+    /// <summary>
+    /// Gets a value that indicates whether the writer can seek to a particular position on the stream.
+    /// </summary>
+    public bool CanSeek => this.streamWriter.BaseStream.CanSeek;
 
     /// <summary>
     /// Gets the column names.
@@ -50,66 +67,68 @@ public partial class CsvWriter : IDisposable, IAsyncDisposable
     public IReadOnlyList<string> ColumnNames { get; private set; }
 
     /// <summary>
+    /// Gets the encoding.
+    /// </summary>
+    public Encoding Encoding => this.streamWriter.Encoding;
+
+    /// <summary>
+    /// Gets the new line characters used by the <see cref="StreamWriter" />.
+    /// </summary>
+    internal string NewLine => this.streamWriter.NewLine;
+
+    /// <summary>
+    /// Gets a value that indicates whether the CSV writer is open.
+    /// </summary>
+    public bool Open => !this.disposedValue;
+
+    /// <summary>
     /// Gets the configuration options.
     /// </summary>
     public CsvOptions Options { get; }
 
-    private Encoding? GetEncoding()
-    {
-        return
-            this.Options.CodePage is { } codePage
-                ? Encoding.GetEncoding(codePage)
-                : null;
-    }
+    /// <summary>
+    /// Determines an optional encoding.
+    /// If no encoding is specified, the writer attempts to find it in the stream.
+    /// </summary>
+    /// <returns>The predefined encoding.</returns>
+    private Encoding? GetEncoding() =>
+        this.Options.CodePage is { } codePage
+            ? Encoding.GetEncoding(codePage)
+            : null;
 
     private void Initialize()
     {
         if (this.Options.HasHeaderLine)
         {
+            var baseStream = this.streamWriter.BaseStream;
+            var positionCurrent = baseStream.Position;
+            if (baseStream.CanSeek)
+                baseStream.Seek(0L, SeekOrigin.Begin);
+            using var streamReader = new StreamReader(baseStream, leaveOpen: true);
+            var headerLine = streamReader.ReadLine();
+            if (headerLine is not null)
+            {
+                var columnNames = headerLine.Split(this.Options.Delimiter);
+                if (this.Options.ColumnNames is { } expectedColumnNames && !columnNames.Equals(expectedColumnNames))
+                    throw new CsvHeaderDoesNotHaveExpectedColumnNamesException(expectedColumnNames.ToArray(), columnNames);
+                this.ColumnNames = columnNames;
+                return;
+            }
+            if (this.ColumnNames is not { } definedColumnNames)
+                throw new CsvHeaderColumnNamesNotConfiguredException();
+            this.ColumnNames = definedColumnNames;
             this.streamWriter.WriteLine(string.Join(this.Options.Delimiter, this.ColumnNames));
             this.streamWriter.Flush();
+            if (baseStream.CanSeek && positionCurrent != 0L)
+                baseStream.Seek(positionCurrent, SeekOrigin.Begin);
         }
     }
 
     /// <summary>
-    /// Writes a line to the CSV data.
+    /// Closes the CSV writer.
     /// </summary>
-    /// <param name="values">The CSV values to write.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>An awaitable task.</returns>
-    /// <exception cref="OperationCanceledException">
-    /// An <see cref="OperationCanceledException" /> is thrown if <paramref name="cancellationToken" /> is triggered.
-    /// </exception>
-    /// <exception cref="ObjectDisposedException">
-    /// An <see cref="ObjectDisposedException" /> is thrown if <paramref name="cancellationToken" /> has been disposed and is triggered.
-    /// </exception>
-    /// <exception cref="CsvValuesDoNotMatchColumnsException">
-    /// A <see cref="CsvValuesDoNotMatchColumnsException" /> is thrown if the number of values does not match the number of predefined or predetermined columns.
-    /// </exception>
-    public async Task WriteLineAsync(
-        IReadOnlyList<string> values,
-        CancellationToken cancellationToken = default)
+    public void Close()
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        if (this.Options.HasHeaderLine && this.ColumnNames is { } columnNames && columnNames.Count != values.Count)
-            throw new CsvValuesDoNotMatchColumnsException(columnNames.Count, values.Count);
-        await this.streamWriter.WriteLineAsync(string.Join(this.Options.Delimiter, values));
-    }
-
-    /// <summary>
-    /// Flushes the buffer to the data stream.
-    /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>An awaitable task.</returns>
-    /// <exception cref="OperationCanceledException">
-    /// An <see cref="OperationCanceledException" /> is thrown if <paramref name="cancellationToken" /> is triggered.
-    /// </exception>
-    /// <exception cref="ObjectDisposedException">
-    /// An <see cref="ObjectDisposedException" /> is thrown if <paramref name="cancellationToken" /> has been disposed and is triggered.
-    /// </exception>
-    public async Task FlushAsync(CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        await this.streamWriter.FlushAsync();
+        this.streamWriter.Close();
     }
 }

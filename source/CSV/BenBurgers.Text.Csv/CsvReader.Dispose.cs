@@ -5,7 +5,7 @@
 
 namespace BenBurgers.Text.Csv;
 
-public partial class CsvReader
+public partial class CsvReader : IDisposable, IAsyncDisposable
 {
     private bool disposedValue = false;
 

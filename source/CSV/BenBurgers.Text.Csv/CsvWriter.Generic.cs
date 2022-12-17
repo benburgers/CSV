@@ -51,14 +51,28 @@ public sealed class CsvWriter<T> : CsvWriter
         T record,
         CancellationToken cancellationToken = default)
     {
-        var rawValues = ((CsvOptions<T>)this.Options).Mapping switch
+        var mapping = ((CsvOptions<T>)this.Options).Mapping;
+        switch (mapping)
         {
-            CsvConverterMapping<T> { SourceConverter: { } sourceConverter }
-                => sourceConverter(record),
-            CsvHeaderMapping<T> { ValueGetters: { } valueGetters } when this.ColumnNames is { } columnNames
-                => columnNames.Select(cn => valueGetters[cn](record) ?? string.Empty).ToArray(),
-            _ => throw new NotSupportedException()
-        };
-        await base.WriteLineAsync(rawValues, cancellationToken);
+            case ICsvLinearMapping<T> linearMapping:
+                {
+                    var rawValues = linearMapping.Producer(record);
+                    await base.WriteLineAsync(rawValues, cancellationToken);
+                }
+                break;
+            case ICsvHeaderMapping<T> headerMapping:
+                {
+                    var rawValues = headerMapping.Producer(record);
+                    var lineValues =
+                        this
+                            .ColumnNames
+                            .Select(cn => rawValues[cn])
+                            .ToArray();
+                    await base.WriteLineAsync(lineValues, cancellationToken);
+                }
+                break;
+            default:
+                throw new NotSupportedException();
+        }
     }
 }

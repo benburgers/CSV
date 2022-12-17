@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HeaderColumnNamesNotConfigured" xml:space="preserve">
+    <value>The CSV header is required and does not exist, but no column names have been predefined.</value>
+  </data>
+  <data name="HeaderDoesNotHaveExpectedColumnNames" xml:space="preserve">
+    <value>The CSV header does not have the expected column names.</value>
+  </data>
   <data name="HeaderLineMissing" xml:space="preserve">
     <value>A CSV header line was expected, but wasn't found.</value>
+  </data>
+  <data name="LineOutOfBounds" xml:space="preserve">
+    <value>The line '{0}' is out of bounds of the CSV stream.</value>
   </data>
   <data name="Unexpected" xml:space="preserve">
     <value>An unexpected error occurred.</value>

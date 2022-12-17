@@ -4,6 +4,7 @@
  */
 
 using System.Text;
+using BenBurgers.Text.Csv.Tests.CsvReaders;
 
 namespace BenBurgers.Text.Csv.Tests;
 

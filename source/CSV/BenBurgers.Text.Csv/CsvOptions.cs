@@ -13,12 +13,14 @@ namespace BenBurgers.Text.Csv;
 /// <param name="CodePage">The code page of the encoding, <see langword="null" /> means the encoding is detected automatically. Defaults to <see langword="null" />.</param>
 /// <param name="Delimiter">The delimiter of columns. Defaults to ','.</param>
 /// <param name="HasHeaderLine">Indicates whether the CSV data has a header line with column names. Defaults to 'false'.</param>
-/// <param name="ColumnNames">The names of the columns. Defaults to <see langword="null" />. Column names will then be read from the header line or the header line will be omitted entirely, depending on <paramref name="HasHeaderLine" />.</param>
+/// <param name="ColumnNames">A set of predefined column names.</param>
 public record CsvOptions(
     int? CodePage = null,
     char Delimiter = ',',
     bool HasHeaderLine = false,
-    IReadOnlyList<string>? ColumnNames = null);
+    IReadOnlySet<string>? ColumnNames = null)
+{
+}
 
 /// <summary>
 /// Configuration options for CSV data.
@@ -35,4 +37,4 @@ public record CsvOptions<T>(
         CodePage,
         Delimiter,
         HasHeaderLine: Mapping is CsvHeaderMapping<T>,
-        ColumnNames: Mapping.ColumnNames);
+        Mapping.ColumnNames);

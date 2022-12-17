@@ -3,25 +3,26 @@
  * This work is licensed by GNU General Public License version 3.
  */
 
+using BenBurgers.Text.Csv.Tests.CsvReaders;
+
 namespace BenBurgers.Text.Csv.Tests;
 
 using System.Text;
-using static CsvReaderTestGenericValues;
 
 public partial class CsvReaderTests
 {
     [Theory(DisplayName = "CSV Reader - record values")]
     [ClassData(typeof(CsvReaderTestGenericValues))]
-    public async Task GenericTestAsync(
+    public async Task GenericTestAsync<T>(
         string input,
-        CsvOptions<MockCsvRecord> options,
-        MockCsvRecord[] expected)
+        CsvOptions<T> options,
+        T[] expected)
     {
         // Arrange
         var inputData = Encoding.UTF8.GetBytes(input);
         using var stream = new MemoryStream(inputData);
-        using var reader = new CsvReader<MockCsvRecord>(stream, options);
-        var records = new List<MockCsvRecord>();
+        using var reader = new CsvReader<T>(stream, options);
+        var records = new List<T>();
 
         // Act
         while (await reader.ReadLineAsync() is { } record)

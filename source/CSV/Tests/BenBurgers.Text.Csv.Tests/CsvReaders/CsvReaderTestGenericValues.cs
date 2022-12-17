@@ -3,14 +3,25 @@
  * This work is licensed by GNU General Public License version 3.
  */
 
+using BenBurgers.Text.Csv.Attributes;
 using BenBurgers.Text.Csv.Mapping;
 using System.Collections;
 
-namespace BenBurgers.Text.Csv.Tests;
+namespace BenBurgers.Text.Csv.Tests.CsvReaders;
 
 public class CsvReaderTestGenericValues : IEnumerable<object?[]>
 {
-    public sealed record MockCsvRecord(string Value1, int Value2, string Value3, string Value4);
+    public sealed record MockCsvRecord(
+        string Value1,
+        int Value2,
+        string Value3,
+        string Value4);
+
+    public sealed record MockCsvRecordWithAttributes(
+        [property: CsvColumn("myValue")] string Value1,
+        [property: CsvColumn("nextValue")] int Value2,
+        string Value3,
+        string Value4);
 
     private static readonly IEnumerable<object?[]> Values =
         new[]
@@ -36,6 +47,7 @@ abc,123,ABC,!@#
 def,456,DEF,$%^
 ",
                 new CsvOptions<MockCsvRecord>(new CsvHeaderMapping<MockCsvRecord>(
+                    new[] { "Value1", "Value2", "Value3", "Value4" }.ToHashSet(),
                     rawValues => new(
                         rawValues[nameof(MockCsvRecord.Value1)],
                         int.Parse(rawValues[nameof(MockCsvRecord.Value2)]),
@@ -81,6 +93,19 @@ def;456;DEF;$%^
                     new MockCsvRecord("abc", 123, "ABC", "!@#"),
                     new MockCsvRecord("def", 456, "DEF", "$%^")
                 }
+            },
+            new object?[]
+            {
+@"Value3,Value4,nextValue,myValue
+def,abc,321,cba
+zxy,qwe,123,tre
+",
+                new CsvOptions<MockCsvRecordWithAttributes>(new CsvHeaderTypeMapping<MockCsvRecordWithAttributes>()),
+                new object[]
+                {
+                    new MockCsvRecordWithAttributes("cba", 321, "def", "abc"),
+                    new MockCsvRecordWithAttributes("tre", 123, "zxy", "qwe")
+                }
             }
         };
 
@@ -91,6 +116,6 @@ def;456;DEF;$%^
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator();
+        return GetEnumerator();
     }
 }

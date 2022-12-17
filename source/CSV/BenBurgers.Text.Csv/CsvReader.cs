@@ -11,9 +11,9 @@ namespace BenBurgers.Text.Csv;
 /// <summary>
 /// Reads CSV data.
 /// </summary>
-public partial class CsvReader : IDisposable, IAsyncDisposable
+public partial class CsvReader
 {
-    private readonly StreamReader streamReader;
+    private StreamReader streamReader;
 
     /// <summary>
     /// Initializes a new instance of <see cref="CsvReader" />.
@@ -27,7 +27,7 @@ public partial class CsvReader : IDisposable, IAsyncDisposable
     {
         this.Options = options;
         this.streamReader =
-            this.GetEncoding() is { } encoding
+            this.GetPredefinedEncoding() is { } encoding
                 ? new StreamReader(stream, encoding)
                 : new StreamReader(stream);
         this.Initialize();
@@ -49,31 +49,65 @@ public partial class CsvReader : IDisposable, IAsyncDisposable
     }
 
     /// <summary>
+    /// Gets a value that indicates whether the reader can seek to a particular position on the stream.
+    /// </summary>
+    public bool CanSeek => this.streamReader.BaseStream.CanSeek;
+
+    /// <summary>
     /// Gets the column names.
     /// </summary>
-    public IReadOnlyList<string> ColumnNames { get; private set; } = new List<string>();
+    public IReadOnlyList<string> ColumnNames { get; private set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Gets the encoding.
+    /// </summary>
+    public Encoding Encoding => this.streamReader.CurrentEncoding;
+
+    /// <summary>
+    /// Gets a value that indicates whether the CSV reader is open.
+    /// </summary>
+    public bool Open => !this.disposedValue;
 
     /// <summary>
     /// Gets the CSV configuration options.
     /// </summary>
     public CsvOptions Options { get; }
 
-    private Encoding? GetEncoding()
-    {
-        return
-            this.Options.CodePage is { } codePage
-                ? Encoding.GetEncoding(codePage)
-                : null;
-    }
+    /// <summary>
+    /// Determines an optional encoding.
+    /// If no encoding is specified, the reader attempts to find it in the stream.
+    /// </summary>
+    /// <returns>The predefined encoding.</returns>
+    private Encoding? GetPredefinedEncoding() =>
+        this.Options.CodePage is { } codePage
+            ? Encoding.GetEncoding(codePage)
+            : null;
 
     private void Initialize()
     {
         if (this.Options.HasHeaderLine)
         {
-            if (this.streamReader.ReadLine() is not { } headerLine)
+            var columnNamesFound = this.streamReader.ReadLine()?.Split(this.Options.Delimiter);
+            var columnNamesPredefined = this.Options.ColumnNames?.ToArray();
+            var columnNames = columnNamesFound ?? columnNamesPredefined;
+            if (columnNames is null)
                 throw new CsvHeaderLineMissingException();
-            this.ColumnNames = headerLine.Split(this.Options.Delimiter);
+            if (columnNamesPredefined is not null && columnNamesFound is not null && !columnNamesPredefined.All(cn => columnNamesFound!.Contains(cn)))
+                throw new CsvHeaderColumnNamesNotConfiguredException();
+            this.ColumnNames = columnNames;
         }
+    }
+
+    /// <summary>
+    /// Reads a line from the CSV data.
+    /// </summary>
+    /// <returns>A list of raw values.</returns>
+    public IReadOnlyList<string>? ReadLine()
+    {
+        return
+            this.streamReader.ReadLine() is { } line
+                ? line.Split(this.Options.Delimiter)
+                : null;
     }
 
     /// <summary>
@@ -94,5 +128,18 @@ public partial class CsvReader : IDisposable, IAsyncDisposable
             await this.streamReader.ReadLineAsync() is { } line
                 ? line.Split(this.Options.Delimiter)
                 : null;
+    }
+
+    /// <summary>
+    /// Seeks on the stream to the specified <paramref name="offset" /> from the specified <paramref name="origin" />.
+    /// </summary>
+    /// <param name="offset">The offset.</param>
+    /// <param name="origin">The origin.</param>
+    internal void Seek(long offset, SeekOrigin origin)
+    {
+        var baseStream = this.streamReader.BaseStream;
+        baseStream.Seek(offset, origin);
+        this.streamReader = new StreamReader(baseStream);
+        // TODO verify start of line
     }
 }

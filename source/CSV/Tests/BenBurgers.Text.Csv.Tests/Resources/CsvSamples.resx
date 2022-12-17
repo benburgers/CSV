@@ -117,25 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HeaderColumnNamesNotConfigured" xml:space="preserve">
-    <value>De CSV kolomregel is verplicht en bestaat niet, maar de kolomnamen zijn niet vooraf gedefinieerd.</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Sample" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Sample.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="HeaderDoesNotHaveExpectedColumnNames" xml:space="preserve">
-    <value>De CSV kolomregel heeft niet de verwachte kolomnamen.</value>
-  </data>
-  <data name="HeaderLineMissing" xml:space="preserve">
-    <value>Een CSV kolomregel werd verwacht, maar was niet gevonden.</value>
-  </data>
-  <data name="LineOutOfBounds" xml:space="preserve">
-    <value>De regel '{0}' is buiten het bereik van de CSV gegevensstroom.</value>
-  </data>
-  <data name="OptionsValidationHeaderLineWithoutMapper" xml:space="preserve">
-    <value>De CSV configuratieopties geven aan dat er een kolomregel is, maar er was geen kolomvertaler meegegeven.</value>
-  </data>
-  <data name="Unexpected" xml:space="preserve">
-    <value>Een onverwachte fout is opgetreden.</value>
-  </data>
-  <data name="ValuesDoNotMatchColumns" xml:space="preserve">
-    <value>Het aantal CSV waardes '{0}' komt niet overeen met het vooraf vastgestelde aantal kolommen '{1}'.</value>
+  <data name="Sample_header" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Sample_header.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
