@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Project Settings">
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Title>Ben Burgers CSV features</Title>
-		<Version>0.1.0</Version>
+		<Version>0.2.0</Version>
 		<Authors>benburgers</Authors>
 		<Company>Ben Burgers</Company>
 		<Product>Ben Burgers Text</Product>
 		<Description>Entity Framework Core implementation for reading and writing CSV files.</Description>
-		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<Copyright>© 2022-2024 Ben Burgers and contributors</Copyright>
 		<PackageProjectUrl>https://github.com/users/benburgers/projects/2</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/benburgers/Text</RepositoryUrl>
@@ -21,12 +21,12 @@
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Label="Package References .NET 6.0" Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
+	<ItemGroup Label="Package References .NET 8.0" Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
 	</ItemGroup>
 
-	<ItemGroup Label="Package References .NET 7.0" Condition="'$(TargetFramework)' == 'net7.0'">
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+	<ItemGroup Label="Package References .NET 9.0" Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Label="Package">

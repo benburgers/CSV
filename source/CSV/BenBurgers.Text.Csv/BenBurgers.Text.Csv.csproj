@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Project Settings">
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Title>Ben Burgers CSV features</Title>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<Authors>benburgers</Authors>
 		<Company>Ben Burgers</Company>
 		<Product>Ben Burgers Text</Product>
 		<Description>Features reading and writing CSV files.</Description>
-		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<Copyright>© 2022-2024 Ben Burgers and contributors</Copyright>
 		<PackageProjectUrl>https://github.com/users/benburgers/projects/2</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/benburgers/Text</RepositoryUrl>
@@ -19,7 +19,11 @@
 		<PackageTags>Text;CSV;Comma-Separated;Values;Character;Delimiter;Reader;Writer;Stream</PackageTags>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-		<PackageReleaseNotes>Version 1.1.0
+		<PackageReleaseNotes>Version 1.2.0
+- Target frameworks .NET 8.0 and .NET 9.0
+- Dependency updates.
+		
+Version 1.1.0
 - CsvStream.
 - CsvStreamFactory.
 - CSV attributes for optional custom type mapping.

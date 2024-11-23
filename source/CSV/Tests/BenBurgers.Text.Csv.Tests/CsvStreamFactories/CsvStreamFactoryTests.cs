@@ -1,5 +1,5 @@
 ﻿/*
- * © 2022 Ben Burgers and contributors.
+ * © 2022-2024 Ben Burgers and contributors.
  * This work is licensed by GNU General Public License version 3.
  */
 
@@ -13,15 +13,8 @@ using System.Text;
 namespace BenBurgers.Text.Csv.Tests.CsvStreamFactories;
 
 [Collection(nameof(ConfigurationTestCollection))]
-public class CsvStreamFactoryTests
+public class CsvStreamFactoryTests(ConfigurationTestFixture configurationTestFixture)
 {
-    private readonly ConfigurationTestFixture configurationTestFixture;
-
-    public CsvStreamFactoryTests(ConfigurationTestFixture configurationTestFixture)
-    {
-        this.configurationTestFixture = configurationTestFixture;
-    }
-
     [Fact(DisplayName = "CSV Stream Factory :: from FileInfo")]
     public void FromFileInfoTest()
     {
@@ -82,7 +75,7 @@ Host: {hostIP}:{port}
             var buffer = new byte[connectionSocket.ReceiveBufferSize];
             connectionSocket.Receive(buffer);
             var message = Encoding.UTF8.GetString(buffer);
-            Assert.Equal(httpRequestMessageExpected, message.Substring(0, message.IndexOf('\0')));
+            Assert.Equal(httpRequestMessageExpected, message[..message.IndexOf('\0')]);
 
             var responseBuilder = new StringBuilder();
             responseBuilder
@@ -133,6 +126,6 @@ Host: {hostIP}:{port}
         // Assert
         Assert.NotNull(csvStream);
         Assert.True(csvStream.Open);
-        Assert.Equal(new[] { "Abc", "Def", "Ghi", "Jkl", "Mno", "Pqr", "Stu", "Vwx", "Yz" }, csvStream.ColumnNames);
+        Assert.Equal(["Abc", "Def", "Ghi", "Jkl", "Mno", "Pqr", "Stu", "Vwx", "Yz"], csvStream.ColumnNames);
     }
 }
